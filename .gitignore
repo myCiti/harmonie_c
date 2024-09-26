@@ -7,6 +7,10 @@
 *.o
 *.obj
 
+# VS Code
+.vscode/
+.pio/
+
 # Precompiled Headers
 *.gch
 *.pch
