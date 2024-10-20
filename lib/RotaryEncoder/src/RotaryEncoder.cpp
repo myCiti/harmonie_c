@@ -114,7 +114,7 @@ void RotaryEncoder::tick(void)
 {
   int sig1 = digitalRead(_pin1);
   int sig2 = digitalRead(_pin2);
-  int sig3 = digitalRead(_pin3);
+  
   int8_t thisState = sig1 | (sig2 << 1);
 
   if (_oldState != thisState) {
@@ -149,10 +149,6 @@ void RotaryEncoder::tick(void)
       }
       break;
     } // switch
-  } else if (sig3){
-    _buttonPressed = true;
-  } else {
-    _buttonPressed = false;
   }// if
 } // tick()
 
@@ -163,10 +159,16 @@ unsigned long RotaryEncoder::getMillisBetweenRotations() const
 }
 
 bool RotaryEncoder::getButtonPressed(){
-    if(_buttonPressed){
-       delay(250);
+    int press = digitalRead(_pin3);
+    bool value = false;
+
+    if (press){
+        while (digitalRead(_pin3)) { // deboucing
+            delay(50);
+        }
+        value = true;
     }
-    return _buttonPressed;
+    return value;
 }
 
 unsigned long RotaryEncoder::getRPM()
@@ -177,6 +179,4 @@ unsigned long RotaryEncoder::getRPM()
   unsigned long t = max(timeBetweenLastPositions, timeToLastPosition);
   return 60000.0 / ((float)(t * 20));
 }
-
-
 // End
