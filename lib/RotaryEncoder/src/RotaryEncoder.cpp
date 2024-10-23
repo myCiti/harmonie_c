@@ -114,6 +114,7 @@ void RotaryEncoder::tick(void)
 {
   int sig1 = digitalRead(_pin1);
   int sig2 = digitalRead(_pin2);
+  int sig3 = digitalRead(_pin3);
   
   int8_t thisState = sig1 | (sig2 << 1);
 
@@ -150,6 +151,13 @@ void RotaryEncoder::tick(void)
       break;
     } // switch
   }// if
+  
+  if (sig3){
+    while(digitalRead(_pin3)){ delay (50); }
+    _buttonPressed = true;
+  } else {
+    _buttonPressed = false;
+  }
 } // tick()
 
 
@@ -158,7 +166,7 @@ unsigned long RotaryEncoder::getMillisBetweenRotations() const
   return (_positionExtTime - _positionExtTimePrev);
 }
 
-bool RotaryEncoder::getButtonPressed(){
+/* bool RotaryEncoder::getButtonPressed(){
     int press = digitalRead(_pin3);
     bool value = false;
 
@@ -169,8 +177,13 @@ bool RotaryEncoder::getButtonPressed(){
         value = true;
     }
     return value;
-}
+} */
 
+bool RotaryEncoder:: getButtonPressed(){
+    if (_buttonPressed) return true;
+
+    return false;
+}
 unsigned long RotaryEncoder::getRPM()
 {
   // calculate max of difference in time between last position changes or last change and now.

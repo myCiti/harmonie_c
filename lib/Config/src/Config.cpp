@@ -23,6 +23,7 @@ bool Config::saveToFile(){
         return false;
     }
     file.close();
+    serializeJsonPretty(doc, Serial);
     return true;
 }
 

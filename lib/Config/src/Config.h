@@ -2,8 +2,8 @@
 // Menu.h - library for using menu with lcd
 //-----------
 
-#ifndef MENU_H
-#define MENU_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
 #include <ArduinoJson.h>
 #include <LittleFS.h>

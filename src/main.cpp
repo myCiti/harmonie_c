@@ -8,12 +8,13 @@
 #include <ItemToggle.h>
 #include <ItemBack.h>
 #include <display/LiquidCrystal_I2CAdapter.h>
-#include <renderer/CharacterDisplayRenderer.h>
+#include <renderer/CharacterDisplayRenderer.h> 
 #include <RotaryEncoder.h>
 #include "RotaryAdapter.h"
 
 #include "lcd.h"
-#include "Config.h"
+#include "Menu.h"
+
 
 LiquidCrystal_I2CAdapter  lcdAdapter(&lcd);
 CharacterDisplayRenderer renderer(&lcdAdapter, 20, 4);
@@ -21,7 +22,7 @@ LcdMenu menu(renderer);
 
 RotaryEncoder rotaryEnc(15, 8, 9,  RotaryEncoder::LatchMode::FOUR0);
 RotaryAdapter rotary(&menu, &rotaryEnc);
-
+/*
 // Define the main menu
 // Declare callbacks 
     void timersOpen(int pos);
@@ -37,8 +38,8 @@ RotaryAdapter rotary(&menu, &rotaryEnc);
     void paramBtnRead(int pos);
     void paramCounterCallback(uint8_t pos);
     void paramStopOutCallback(uint8_t pos);
-
-    extern MenuScreen* timersScreen;
+*/
+/*     extern MenuScreen* timersScreen;
     extern MenuScreen* midstopScreen;
     extern MenuScreen* encoderScreen;
     extern MenuScreen* sdcardScreen;
@@ -54,9 +55,9 @@ RotaryAdapter rotary(&menu, &rotaryEnc);
     String paramCounter[]  ={"CLS.LMT", "OPN.LMT"};
 
     extern String paramStopOut[];
-    String paramStopOut[]  ={"NOR.CLS", "NOR.OPN"};
+    String paramStopOut[]  ={"NOR.CLS", "NOR.OPN"}; */
 
-// clang-format off
+/* // clang-format off
 MENU_SCREEN(mainScreen, mainItems,
     ITEM_SUBMENU("TIMERS", timersScreen),
     ITEM_SUBMENU("MIDSTOP", midstopScreen),
@@ -97,7 +98,7 @@ MENU_SCREEN(paramScreen, paramItems,
     ITEM_STRING_LIST("COUNTER", paramCounter, 2, paramCounterCallback),
     ITEM_STRING_LIST("STOPOUT", paramStopOut, 2, paramStopOutCallback),
     ITEM_BACK("...BACK")
-);
+);   */
 
 const int input_Stop = 6; // stop button pin
 
@@ -112,16 +113,20 @@ void initialize(){
     stopSignal = false;
     lcd_print("BIENVENUE", 0, 3);
     lcd_print("HARMONIE_C", 1, 3);
+    Serial.printf("Initialize, timers.opens: %d", config.timers.open);
 }
 
 
 void setup(){
     Serial.begin(9600);
-    renderer.begin();
+    
     LittleFS.begin();
+
+    config.loadFromFile();
 
     renderer.begin();
     menu.setScreen(mainScreen);
+
 
     // set up inputs
     pinMode(input_Stop, INPUT_PULLDOWN);
@@ -146,6 +151,8 @@ void setup(){
     Serial.println("End....");
 */
     initialize();
+    delay(5000);
+    Serial.printf("timers.open: %d\n ", config.timers.open);
 }
 
 void loop(){
@@ -154,7 +161,7 @@ void loop(){
     //Serial.println(rotaryEnc.getButtonPressed());
 }
 
-
+/* 
 void timersOpen(int pos){
     Serial.println(pos);
 }
@@ -205,4 +212,4 @@ void paramCounterCallback(uint8_t pos){
 
 void paramStopOutCallback(uint8_t pos){
     Serial.println(pos);
-}
+}  */
